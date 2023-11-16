@@ -1,0 +1,23 @@
+version: '3'
+services:
+  assessment:
+    container_name: nest-app
+    env_file:
+      - ./.env.local
+    ports:
+      - '3000:3000'
+    depends_on:
+      - db
+  db:
+    image: postgres
+    container_name: pgdb
+    restart: always
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: '&QyZBeaDY(Xv(xjD'
+      POSTGRES_DB: 'owais_db'
+
+volumes:
+  postgres-db:
