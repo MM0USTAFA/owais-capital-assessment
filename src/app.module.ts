@@ -5,7 +5,7 @@ import { typeOrmConfigs } from './config/db/db.conf';
 import { ConfigModule } from '@nestjs/config';
 import configs, { configsValidationSchema } from './config/env.conf';
 import { CustomConfigService } from './shared/services/custom-config.service';
-import { UserModule } from './domains/user/user.module';
+import { UserModule } from './domains/users/users.module';
 import { AuthModule } from './domains/auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
 
