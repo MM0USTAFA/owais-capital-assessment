@@ -122,10 +122,7 @@ export class PgFilterService {
       Reflect.deleteProperty(clonedQuery, staticKey);
     });
 
-    console.log(this.findManyOptions);
-
     this.findManyOptions.where = clonedQuery;
-    console.log(clonedQuery);
     return this;
   }
 
@@ -192,7 +189,6 @@ export class PgFilterService {
       searchFields,
       searchValue,
     );
-    console.log(conditionsQuery);
 
     this.findManyOptions.where = [
       this.findManyOptions.where,

@@ -11,13 +11,9 @@ export class CRUDService<Entity extends ObjectLiteral> {
     return result;
   }
 
-  async findOneById(id: number) {
-    const records: Entity[] = await this.repo
-      .createQueryBuilder()
-      .select('*')
-      .where('id = :id', { id })
-      .execute();
-    return records[0];
+  async findOneBy(record: Record<string, any>) {
+    const row = await this.repo.findOneBy(record);
+    return row;
   }
 
   async findMany(findManyOptions: FindManyOptions<Entity>) {
@@ -26,7 +22,7 @@ export class CRUDService<Entity extends ObjectLiteral> {
   }
 
   async update(id: number, data: Entity) {
-    const record: Entity | null = await this.findOneById(id);
+    const record: Entity | null = await this.findOneBy({ id });
 
     if (!record)
       throw new NotFoundException(`"${Entity.name}" record not found`);
@@ -36,13 +32,13 @@ export class CRUDService<Entity extends ObjectLiteral> {
     return result;
   }
 
-  async delete(id: number) {
-    const record: Entity | null = await this.findOneById(id);
+  async remove(id: number) {
+    const record: Entity | null = await this.findOneBy({ id });
 
     if (!record)
       throw new NotFoundException(`"${Entity.name}" record not found`);
 
-    const result = await this.repo.delete(record);
-    return result;
+    await this.repo.remove(record);
+    return { msg: 'user has been deleted successfully' };
   }
 }

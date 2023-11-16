@@ -7,6 +7,8 @@ export interface ENVVariables {
   DB_NAME: string;
   DB_USERNAME: string;
   DB_PASSWORD: string;
+  ENCRYPTION_ROUNDS: string;
+  JWT_SECRET_KEY: string;
 }
 
 const configs: () => ENVVariables = () => ({
@@ -16,6 +18,8 @@ const configs: () => ENVVariables = () => ({
   DB_NAME: process.env.DB_NAME,
   DB_USERNAME: process.env.DB_USERNAME,
   DB_PASSWORD: process.env.DB_PASSWORD,
+  ENCRYPTION_ROUNDS: process.env.ENCRYPTION_ROUNDS,
+  JWT_SECRET_KEY: process.env.JWT_SECRET_KEY,
 });
 
 export const configsValidationSchema = Joi.object({
@@ -27,6 +31,8 @@ export const configsValidationSchema = Joi.object({
   DB_NAME: Joi.string().empty(),
   DB_USERNAME: Joi.string().empty(),
   DB_PASSWORD: Joi.string().empty(),
+  ENCRYPTION_ROUNDS: Joi.number().empty(),
+  JWT_SECRET_KEY: Joi.string().empty(),
 });
 
 export default configs;
