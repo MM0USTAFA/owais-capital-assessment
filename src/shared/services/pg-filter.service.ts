@@ -2,7 +2,7 @@ import { FindManyOptions, Not, In, ILike } from 'typeorm';
 import { IQueryBase } from '../interfaces/query-base';
 
 export class PgFilterService {
-  private findManyOptions: FindManyOptions = {};
+  public findManyOptions: FindManyOptions = {};
   private filterStaticFields: string[] = [
     'page',
     'limit',

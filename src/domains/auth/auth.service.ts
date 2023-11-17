@@ -15,12 +15,11 @@ export class AuthService {
   ) {}
 
   async signUp(signupData: SignUpDTO) {
-    signupData.password = await this.hashService.hash(signupData.password);
     return this.usersService.create(signupData as any);
   }
 
   async signIn(email: string, password: string) {
-    const user = await this.usersService.findOneBy({ email });
+    const user = await this.usersService.findOneBy({ where: { email } });
 
     if (!user) throw new UnauthorizedException('Invalid email or password');
 

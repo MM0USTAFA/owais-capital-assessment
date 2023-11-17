@@ -9,6 +9,9 @@ export interface ENVVariables {
   DB_PASSWORD: string;
   ENCRYPTION_ROUNDS: string;
   JWT_SECRET_KEY: string;
+  STRIPE_SECRET_KEY: string;
+  STRIPE_PUBLISHABLE_KEY: string;
+  STRIPE_SESSIONS_BASE_URL: string;
 }
 
 const configs: () => ENVVariables = () => ({
@@ -20,6 +23,9 @@ const configs: () => ENVVariables = () => ({
   DB_PASSWORD: process.env.DB_PASSWORD,
   ENCRYPTION_ROUNDS: process.env.ENCRYPTION_ROUNDS,
   JWT_SECRET_KEY: process.env.JWT_SECRET_KEY,
+  STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
+  STRIPE_PUBLISHABLE_KEY: process.env.STRIPE_PUBLISHABLE_KEY,
+  STRIPE_SESSIONS_BASE_URL: process.env.STRIPE_SESSIONS_BASE_URL,
 });
 
 export const configsValidationSchema = Joi.object({
@@ -33,6 +39,9 @@ export const configsValidationSchema = Joi.object({
   DB_PASSWORD: Joi.string().empty(),
   ENCRYPTION_ROUNDS: Joi.number().empty(),
   JWT_SECRET_KEY: Joi.string().empty(),
+  STRIPE_SECRET_KEY: Joi.string().empty(),
+  STRIPE_PUBLISHABLE_KEY: Joi.string().empty(),
+  STRIPE_SESSIONS_BASE_URL: Joi.string().empty(),
 });
 
 export default configs;

@@ -12,14 +12,14 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { PgFilterService } from 'src/shared/services/pg-filter.service';
-import { AuthGuard } from 'src/shared/guards/auth.guard';
 import { Serialize } from 'src/shared/interceptors/serialize.interceptor';
 import { UserResponseDTO } from './dtos/user-response.dto';
 import { AdminGuard } from 'src/shared/guards/admin.guard';
 import { CreateUserDTO } from './dtos/create-user.dto';
+import { FindOneOptions } from 'typeorm';
 
 @Controller('users')
-@UseGuards(AuthGuard, AdminGuard)
+@UseGuards(AdminGuard)
 @Serialize(UserResponseDTO)
 export class UsersController {
   constructor(private usersService: UsersService) {}
@@ -31,9 +31,19 @@ export class UsersController {
   }
 
   @Get('/:id')
-  async getUser(@Param('id') id: string) {
-    const user = await this.usersService.findOneBy({ id });
-    if (!user) throw new NotFoundException('User not found');
+  async getUser(
+    @Param('id') id: string,
+    @Query('popFields') popFields: string,
+  ) {
+    const findOptions = new PgFilterService({
+      popFields,
+    }).populate().findManyOptions as FindOneOptions;
+
+    const user = await this.usersService.findOneBy({
+      where: { id },
+      ...findOptions,
+    } as FindOneOptions);
+
     return user;
   }
 
@@ -44,15 +54,15 @@ export class UsersController {
 
   @Patch('/:id')
   async updateUser(@Param('id') id: string, @Body() user: any) {
-    const foundUser = await this.usersService.findOneBy({ id });
+    const foundUser = await this.usersService.findOneBy({
+      where: { id },
+    } as FindOneOptions);
     if (!foundUser) throw new NotFoundException('User not found');
     return this.usersService.update(+id, user);
   }
 
   @Delete('/:id')
   async deleteUser(@Param('id') id: string) {
-    const foundUser = await this.usersService.findOneBy({ id });
-    if (!foundUser) throw new NotFoundException('User not found');
     await this.usersService.remove(+id);
     return { id };
   }

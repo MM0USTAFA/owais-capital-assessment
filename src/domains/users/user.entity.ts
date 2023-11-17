@@ -2,9 +2,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+
+import { Transaction } from '../transactions/transaction.entity';
+import { Account } from '../accounts/account.entity';
 
 @Entity()
 export class User {
@@ -23,7 +27,7 @@ export class User {
   @Column({ nullable: false, unique: true })
   email: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, length: 64 })
   password: string;
 
   @Column({ nullable: false })
@@ -46,4 +50,16 @@ export class User {
     default: () => 'CURRENT_TIMESTAMP(6)',
   })
   updatedAt: Date;
+
+  @OneToMany(
+    () => Transaction,
+    (transaction: Transaction) => transaction.createdBy,
+  )
+  transactions: Transaction[];
+
+  @OneToMany(() => Account, (account: Account) => account.owner)
+  accounts: Account[];
+
+  @OneToMany(() => Account, (account: Account) => account.createdBy)
+  createdAccounts: Account[];
 }

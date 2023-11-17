@@ -8,6 +8,8 @@ import { CustomConfigService } from './shared/services/custom-config.service';
 import { UserModule } from './domains/users/users.module';
 import { AuthModule } from './domains/auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
+import { TransactionsModule } from './domains/transactions/transactions.module';
+import { AccountsModule } from './domains/accounts/accounts.module';
 
 @Module({
   imports: [
@@ -33,6 +35,8 @@ import { JwtModule } from '@nestjs/jwt';
     TypeOrmModule.forRootAsync(typeOrmConfigs),
     UserModule,
     AuthModule,
+    TransactionsModule,
+    AccountsModule,
   ],
   controllers: [AppController],
   providers: [CustomConfigService],

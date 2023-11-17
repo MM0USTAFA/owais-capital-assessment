@@ -1,4 +1,6 @@
-import { Expose } from 'class-transformer';
+import { Expose, Transform, plainToClass } from 'class-transformer';
+import { Account } from 'src/domains/accounts/account.entity';
+import { AccountDTO } from 'src/domains/accounts/dtos/account.dto';
 
 export class UserResponseDTO {
   @Expose()
@@ -24,4 +26,10 @@ export class UserResponseDTO {
 
   @Expose()
   isActive: boolean;
+
+  @Expose()
+  @Transform(
+    ({ obj }) => obj.accounts && plainToClass(AccountDTO, obj.accounts),
+  )
+  accounts: Account[];
 }
