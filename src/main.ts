@@ -15,6 +15,15 @@ async function bootstrap() {
     .setDescription(
       `It's a simple apis to use the minimal operations in fintech`,
     )
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        in: 'header',
+      },
+      'Authorization',
+    )
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);

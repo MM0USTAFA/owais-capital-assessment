@@ -19,20 +19,28 @@ import { AdminGuard } from 'src/shared/guards/admin.guard';
 import { FindOneOptions } from 'typeorm';
 import { CurrentUser } from 'src/shared/decorators/current-user.decorator';
 import { User } from '../users/user.entity';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
+import { CreateAccountDTO } from './dtos/create-account.dto';
+import { QueryDTO } from 'src/shared/dtos/query.dto';
 
 @Controller('accounts')
 @Serialize(AccountDTO)
+@ApiTags('accounts')
+@ApiBearerAuth('Authorization')
 export class AccountsController {
   constructor(private accountsService: AccountsService) {}
 
   @Post()
-  createAccount(@CreatedAccount() account: Account) {
+  createAccount(
+    @Body() body: CreateAccountDTO,
+    @CreatedAccount() account: Account,
+  ) {
     return this.accountsService.create(account);
   }
 
   @Get()
   @UseGuards(AdminGuard)
-  getAccounts(@Query() query: any) {
+  getAccounts(@Query() query: QueryDTO) {
     const findOptions = new PgFilterService(query).exec();
     return this.accountsService.findMany(findOptions);
   }
@@ -77,6 +85,9 @@ export class AccountsController {
 
   @Patch(':id')
   @UseGuards(AdminGuard)
+  @ApiBody({
+    schema: { default: { isActive: false } },
+  })
   updateAccountStatus(
     @Param('id') id: string,
     @Body('isActive') isActive: boolean,

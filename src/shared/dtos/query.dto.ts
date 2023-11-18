@@ -5,16 +5,17 @@ import { IQueryBase } from 'src/shared/interfaces/query-base';
 
 export class QueryDTO implements IQueryBase {
   @ApiProperty({
+    required: false,
     description: 'select all excluding provided ids',
-    example: '1,3,4',
   })
   @IsString()
+  @IsOptional()
   @Expose()
   exclude?: string;
 
   @ApiProperty({
+    required: false,
     description: 'pagination page number',
-    example: '1,3,4',
   })
   @IsNumber()
   @IsOptional()
@@ -22,6 +23,7 @@ export class QueryDTO implements IQueryBase {
   page?: number;
 
   @ApiProperty({
+    required: false,
     description:
       'the value to be searched for, it worked on part not identical match',
   })
@@ -30,9 +32,9 @@ export class QueryDTO implements IQueryBase {
   search?: string;
 
   @ApiProperty({
+    required: false,
     description:
       'the fields to be searched on it (note: when use subfields were populated first)',
-    example: 'field1,field2,field3.subfield',
   })
   @IsString()
   @IsOptional()
@@ -40,9 +42,9 @@ export class QueryDTO implements IQueryBase {
   searchFields?: string;
 
   @ApiProperty({
+    required: false,
     description:
       'the fields to be searched on it (note: when use subfields were populated first)',
-    example: 'field1,field2,field3.subfield',
   })
   @IsString()
   @IsOptional()
@@ -50,8 +52,8 @@ export class QueryDTO implements IQueryBase {
   select?: string;
 
   @ApiProperty({
+    required: false,
     description: 'the fields to be joined be carfuel while using it',
-    example: 'field1,field2,field3.subfield',
   })
   @IsString()
   @IsOptional()
@@ -59,9 +61,9 @@ export class QueryDTO implements IQueryBase {
   popFields?: string;
 
   @ApiProperty({
+    required: false,
     description:
       'sort records depends on record name with or without negative sign when using negative signs the order will be descending',
-    example: '-field1,field2,-field3',
   })
   @IsString()
   @IsOptional()

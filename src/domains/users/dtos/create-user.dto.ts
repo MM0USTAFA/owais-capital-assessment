@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import {
   IsBoolean,
@@ -14,25 +15,30 @@ export class CreateUserDTO {
   @IsNotEmpty()
   @IsString()
   @Transform(({ value }) => value?.trim())
+  @ApiProperty()
   firstName: string;
 
   @IsNotEmpty()
   @IsString()
   @Transform(({ value }) => value?.trim())
+  @ApiProperty()
   middleName: string;
 
   @IsNotEmpty()
   @IsString()
   @Transform(({ value }) => value?.trim())
+  @ApiProperty()
   lastName: string;
 
   @IsNotEmpty()
   @IsEmail()
   @Transform(({ value }) => value?.trim())
+  @ApiProperty()
   email: string;
 
   @IsNotEmpty()
   @IsStrongPassword()
+  @ApiProperty()
   password: string;
 
   @IsDefined()
@@ -43,13 +49,16 @@ export class CreateUserDTO {
   @IsNotEmpty()
   @IsString()
   @Transform(({ value }) => value?.trim())
+  @ApiProperty()
   idIMG: string;
 
   @IsBoolean()
   @IsOptional()
+  @ApiProperty()
   admin: boolean;
 
   @IsBoolean()
   @IsOptional()
+  @ApiProperty()
   isActive: false;
 }

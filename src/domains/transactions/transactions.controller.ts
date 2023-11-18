@@ -20,8 +20,11 @@ import { TransferDTO } from './dtos/transfer.dto';
 import { Serialize } from 'src/shared/interceptors/serialize.interceptor';
 import { TransactionDTO } from './dtos/transaction.dto';
 import { QueryDTO } from 'src/shared/dtos/query.dto';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 @Controller('transactions')
+@ApiTags('transactions')
+@ApiBearerAuth('Authorization')
 export class TransactionsController {
   constructor(private transactionsService: TransactionsService) {}
 

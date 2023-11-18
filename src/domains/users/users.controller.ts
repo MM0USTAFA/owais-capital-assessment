@@ -17,15 +17,19 @@ import { UserResponseDTO } from './dtos/user-response.dto';
 import { AdminGuard } from 'src/shared/guards/admin.guard';
 import { CreateUserDTO } from './dtos/create-user.dto';
 import { FindOneOptions } from 'typeorm';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { QueryDTO } from 'src/shared/dtos/query.dto';
 
 @Controller('users')
 @UseGuards(AdminGuard)
 @Serialize(UserResponseDTO)
+@ApiTags('users')
+@ApiBearerAuth('Authorization')
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
   @Get('/')
-  getUsers(@Query() query: any) {
+  getUsers(@Query() query: QueryDTO) {
     const findOptions = new PgFilterService(query).exec();
     return this.usersService.findMany(findOptions);
   }
