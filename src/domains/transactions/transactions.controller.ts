@@ -22,7 +22,10 @@ import { TransactionDTO } from './dtos/transaction.dto';
 import { QueryDTO } from 'src/shared/dtos/query.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
-@Controller('transactions')
+@Controller({
+  path: 'transactions',
+  version: ['1'],
+})
 @ApiTags('transactions')
 @ApiBearerAuth('Authorization')
 export class TransactionsController {

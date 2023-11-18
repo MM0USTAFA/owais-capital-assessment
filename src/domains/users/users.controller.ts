@@ -20,7 +20,10 @@ import { FindOneOptions } from 'typeorm';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { QueryDTO } from 'src/shared/dtos/query.dto';
 
-@Controller('users')
+@Controller({
+  path: 'users',
+  version: ['1'],
+})
 @UseGuards(AdminGuard)
 @Serialize(UserResponseDTO)
 @ApiTags('users')

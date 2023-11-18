@@ -1,34 +1,27 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import helmet from 'helmet';
-import { ValidationPipe } from '@nestjs/common';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { ValidationPipe, VersioningType } from '@nestjs/common';
+import { SwaggerModule } from '@nestjs/swagger';
+import { swaggerConfigs } from './config/swagger.conf';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: ['error', 'verbose', 'warn', 'log'],
   });
+  app.setGlobalPrefix('/api', { exclude: ['/ping'] });
   app.enableCors();
   app.use(helmet());
-  const config = new DocumentBuilder()
-    .setTitle('Owais Capital Assessment')
-    .setDescription(
-      `It's a simple apis to use the minimal operations in fintech`,
-    )
-    .addBearerAuth(
-      {
-        type: 'http',
-        scheme: 'bearer',
-        bearerFormat: 'JWT',
-        in: 'header',
-      },
-      'Authorization',
-    )
-    .setVersion('1.0')
-    .build();
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('docs', app, document);
   app.useGlobalPipes(new ValidationPipe({}));
+
+  app.enableVersioning({
+    type: VersioningType.URI,
+    defaultVersion: ['1'],
+  });
+
+  const document = SwaggerModule.createDocument(app, swaggerConfigs);
+  SwaggerModule.setup('docs', app, document);
+
   await app.listen(3000);
 }
 bootstrap();

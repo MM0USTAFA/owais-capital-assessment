@@ -4,7 +4,10 @@ import { SignUpDTO } from './dtos/signup.dto';
 import { SignInDTO } from './dtos/signin.dto';
 import { ApiTags } from '@nestjs/swagger';
 
-@Controller('auth')
+@Controller({
+  path: 'auth',
+  version: ['1'],
+})
 @ApiTags('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}

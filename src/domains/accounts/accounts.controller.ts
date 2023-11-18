@@ -23,7 +23,10 @@ import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { CreateAccountDTO } from './dtos/create-account.dto';
 import { QueryDTO } from 'src/shared/dtos/query.dto';
 
-@Controller('accounts')
+@Controller({
+  path: 'accounts',
+  version: ['1'],
+})
 @Serialize(AccountDTO)
 @ApiTags('accounts')
 @ApiBearerAuth('Authorization')
