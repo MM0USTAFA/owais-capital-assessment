@@ -10,7 +10,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Transaction as TransEntity } from './transaction.entity';
 import { StripeService } from 'src/shared/services/stripe.service';
 import { AccountsService } from '../accounts/accounts.service';
-import { DataSource, EntityManager, In, Repository } from 'typeorm';
+import {
+  DataSource,
+  EntityManager,
+  FindManyOptions,
+  In,
+  Repository,
+} from 'typeorm';
 import { TransactionStatus } from './models/transaction-status.model';
 import { TransactionType } from './models/transaction-type.model';
 import { User } from '../users/user.entity';
@@ -198,6 +204,33 @@ export class TransactionsService extends CRUDService<TransEntity> {
           currentBalance: account.balance.toFixed(2) + 'SAR',
         };
     }
+  }
+
+  async getHistory(query: FindManyOptions, accountNumber: string, user: User) {
+    const account = await this.accountsService.findOneBy({
+      where: { accountNumber },
+      relations: { owner: true },
+    });
+
+    if (!user.admin && user.id !== account.owner.id) {
+      throw new ForbiddenException(
+        `you can only see the transactions of your account`,
+      );
+    }
+    query.where =
+      query.where instanceof Array
+        ? [
+            ...query.where,
+            { from: { accountNumber } },
+            { to: { accountNumber } },
+          ]
+        : [
+            { ...query.where, from: { accountNumber } },
+            { ...query.where, to: { accountNumber } },
+          ];
+    console.log(query);
+
+    return this.findMany(query);
   }
 
   private async makeDeposit(accountNumber: string, depositAmount: number) {
