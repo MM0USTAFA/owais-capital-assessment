@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { SwaggerModule } from '@nestjs/swagger';
 import { swaggerConfigs } from './config/swagger.conf';
+import * as morgan from 'morgan';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -12,8 +13,8 @@ async function bootstrap() {
   app.setGlobalPrefix('/api', { exclude: ['/ping'] });
   app.enableCors();
   app.use(helmet());
+  app.use(morgan('tiny'));
   app.useGlobalPipes(new ValidationPipe({}));
-
   app.enableVersioning({
     type: VersioningType.URI,
     defaultVersion: ['1'],

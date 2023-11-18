@@ -75,10 +75,16 @@ export class TransactionsController {
     );
   }
 
-  @Get('/:acn')
+  @Get('/success-deposit')
+  async validatePaymentSession(@Query('sid') sid: string) {
+    console.log(sid);
+    return this.transactionsService.validatePayment(sid);
+  }
+
+  @Get('/account/:accountNumber')
   @Serialize(TransactionDTO)
   getTransactions(
-    @Param('acn') accountNumber: string,
+    @Param('accountNumber') accountNumber: string,
     @Query() query: QueryDTO,
     @CurrentUser() user: User,
   ) {
@@ -94,10 +100,5 @@ export class TransactionsController {
       accountNumber,
       user,
     );
-  }
-
-  @Get('/success-deposit')
-  async validatePaymentSession(@Query('sid') sid: string) {
-    return this.transactionsService.validatePayment(sid);
   }
 }

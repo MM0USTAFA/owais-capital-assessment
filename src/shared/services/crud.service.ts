@@ -20,7 +20,8 @@ export class CRUDService<Entity extends ObjectLiteral> {
 
   async findOneBy(findOptions: FindOneOptions<Entity>) {
     const row = await this.repo.findOne(findOptions);
-    if (!row) throw new NotFoundException(`${Entity.name} not found`);
+    if (!row)
+      throw new NotFoundException(`${this.repo.metadata.name} not found`);
     return row;
   }
 

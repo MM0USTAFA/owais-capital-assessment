@@ -17,9 +17,9 @@ export class AuthModule implements NestModule {
     consumer
       .apply(AuthMiddleware)
       .exclude(
-        '/api/v1/auth/signin',
-        '/api/v1/auth/signup',
-        '/api/v1/transactions/success-deposit',
+        '/v1/auth/signin',
+        '/v1/auth/signup',
+        '/v1/transactions/success-deposit',
         '/ping',
       )
       .forRoutes('*');
